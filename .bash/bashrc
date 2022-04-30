@@ -1,0 +1,50 @@
+#========================================
+# <> bashrc <>
+#========================================
+#----------------------------------------
+# -| VARIABLES AND BINDINGS |-
+
+export EDITOR='vim'
+export VISUAL='vim'
+export VIMRC='$HOME/.vimrc'
+export VIMINIT='source $VIMRC'
+
+#----------------------------------------
+# -| HISTORY |-
+
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+#----------------------------------------
+# -| WINDOW SIZE |-
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+#----------------------------------------
+# -| PROMT SETTINGS |-
+
+export PS1="🐈 [\w] -> "
+set color_prompt force_color_prompt
+
+#----------------------------------------
+# -| FETCH THINGY |-
+
+bash $HOME/.bash/hellothere.sh
+
+#----------------------------------------
+# -| SOURCING  |-
+
+source $HOME/.bash/alias.sh
+source $HOME/.bash/function.sh
+source $HOME/.bash/nnn.sh
+#----------------------------------------

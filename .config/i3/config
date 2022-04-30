@@ -1,0 +1,214 @@
+#vim: filetype=i3
+#========================================
+# <> i3-GAPS <>
+#========================================
+#----------------------------------------
+# -| VARIABLES |-
+
+# Mod key variables
+
+set $defaultmod Mod4
+set $super Mod4
+
+# Workspace variables
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# Color variables
+
+set $dgrey "#20111B"	# Dark Grey
+set $lbrown "#a2742b"	# Light Brown
+set $black "#000000" 	# Black
+
+# Keyboard variables
+
+set $up Up
+set $down Down
+set $left Left
+set $right Right
+
+set $term kitty
+
+#----------------------------------------
+# -| FONT SETTINGS |-
+
+font pango:JetBrainsMono 12
+
+#----------------------------------------
+# -| COLOR SETTINGS |-
+
+
+client.focused          #FFFFFF #FFFFFF #000000 #F4F4F4 #FFFFFF
+client.focused_inactive #666666 #404552 #eeeeee #666666 #666666
+client.unfocused        #404552 #484b52 #eeeeee #ff5757 #404552
+client.urgent           #ff5757 #404552 #ffffff #555757 #404552
+client.background       #404552
+
+#----------------------------------------
+# -| GAP/BORDER SETTINGS |-
+
+for_window [class="^.*"] border pixel 5
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [title="Preferences$"] floating enable
+
+smart_borders no_gaps
+smart_gaps on
+
+gaps inner 15
+gaps outer 5
+
+#----------------------------------------
+# -| KEYBINDINGS |-
+
+# Applications
+bindsym $super+Return exec $term
+bindsym $super+Shift+s exec i3lock --color=$black
+bindsym $super+s exec --no-startup-id rofi -combi-modi window#drun#ssh -show combi -modi combi -lines 20 -font "Fira Code Nerd 16" -hide-scrollbar -show-icons
+bindsym $super+Control+Left workspace next
+bindsym $super+Control+Right workspace next
+
+# Media
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioPause exec mpc toggle
+bindsym XF86AudioPrev exec mpc prev
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 5%+ && paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 5%- && paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+bindsym XF86AudioMute exec --no-startup-id amixer -D pulse sset Master toggle-mute
+
+# Sreenshot
+bindsym Print exec scrot $HOME/Screenshots/%Y-%m-%d-%T-screenshot.png
+#bindsym Control-Print exec scrot $HOME/Screenshots/%Y-%m-%d-%T-screenshot.png --select --line mode=edge
+
+# Windows
+bindsym Mod4+q kill
+bindsym Mod4+Left focus left
+bindsym Mod4+Down focus down
+bindsym Mod4+Up focus up
+bindsym Mod4+Right focus right
+bindsym Mod4+Shift+$Left move left
+bindsym Mod4+Shift+$Down move down
+bindsym Mod4+Shift+$Up move up
+bindsym Mod4+Shift+$Right move right
+bindsym Mod4+h split h
+bindsym Mod4+v split v
+bindsym Mod4+f fullscreen toggle
+bindsym Mod4+e layout toggle split
+bindsym Mod4+Shift+space floating toggle
+bindsym Mod4+space focus mode_toggle
+bindsym Mod4+a focus parent
+focus_follows_mouse no
+
+# Workspaces
+bindsym Mod4+1 workspace $ws1
+bindsym Mod4+2 workspace $ws2
+bindsym Mod4+3 workspace $ws3
+bindsym Mod4+4 workspace $ws4
+bindsym Mod4+5 workspace $ws5
+bindsym Mod4+6 workspace $ws6
+bindsym Mod4+7 workspace $ws7
+bindsym Mod4+8 workspace $ws8
+bindsym Mod4+9 workspace $ws9
+bindsym Mod4+0 workspace $ws10
+
+bindsym Mod4+Shift+1 move container to workspace $ws1
+bindsym Mod4+Shift+2 move container to workspace $ws2
+bindsym Mod4+Shift+3 move container to workspace $ws3
+bindsym Mod4+Shift+4 move container to workspace $ws4
+bindsym Mod4+Shift+5 move container to workspace $ws5
+bindsym Mod4+Shift+6 move container to workspace $ws6
+bindsym Mod4+Shift+7 move container to workspace $ws7
+bindsym Mod4+Shift+8 move container to workspace $ws8
+bindsym Mod4+Shift+9 move container to workspace $ws9
+bindsym Mod4+Shift+0 move container to workspace $ws10
+
+# Move container
+bindsym Mod4+z move workspace to output left
+bindsym Mod4+x move workspace to output right
+
+#----------------------------------------
+# -| RELOAD/RESTART SETTINGS |-
+
+# Reload the configuration file
+bindsym Mod4+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym Mod4+Shift+r restart
+
+#----------------------------------------
+# -| MOUSE SETTINGS |-
+
+# Enable Mouse Hover To Focus
+focus_follows_mouse yes
+
+# Use Mouse+Mod4 to drag floating windows to their wanted position
+floating_modifier Mod4
+
+# Webcam Window Settings
+for_window [title="video0 - mpv"] floating enable
+for_window [title="video0 - mpv"] sticky enable
+
+#----------------------------------------
+# -| AUTOLAUNCH |-
+
+exec --no-startup-id /usr/lib64/polkit-gnome/polkit-gnome-authentication-agent-1
+exec nitrogen --restore &
+exec_always picom --config ~/.config/picom/picom.conf
+exec_always picom
+exec $term -e sudo .bash/startup.sh
+exec_always --no-startup-id mpd
+
+#----------------------------------------
+# -| RESIZE |-
+
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym $left       resize shrink width 10 px or 10 ppt
+        bindsym $down       resize grow height 10 px or 10 ppt
+        bindsym $up         resize shrink height 10 px or 10 ppt
+        bindsym $right      resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left        resize shrink width 10 px or 10 ppt
+        bindsym Down        resize grow height 10 px or 10 ppt
+        bindsym Up          resize shrink height 10 px or 10 ppt
+        bindsym Right       resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or Mod4+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Mod4+r mode "default"
+}
+bindsym $super+Control+r mode "resize"
+
+#----------------------------------------
+# - I3STATUS -
+
+bar {
+        colors {
+        background #2f343f
+        statusline #2f343f
+        separator #4b5262
+
+        # colour of border, background, and text
+        focused_workspace       #2f343f #bf616a #d8dee8
+        active_workspace        #2f343f #2f343f #d8dee8
+        inactive_workspace      #2f343f #2f343f #d8dee8
+        urgent_workspacei       #2f343f #ebcb8b #2f343f
+    }
+        status_command i3status
+}
